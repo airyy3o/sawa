@@ -1,42 +1,37 @@
 export default {
   name: "Mini Kitty Overlay",
+  description: "Floating image overlay",
   version: "1.0.0",
 
   onStart() {
     const img = document.createElement("img");
-
-    // your image
     img.src = "https://i.imgur.com/neaIlwP.png";
 
     img.style.position = "fixed";
-    img.style.width = "56px";   // mini size
+    img.style.width = "56px";
     img.style.height = "56px";
     img.style.top = "200px";
     img.style.left = "40px";
     img.style.zIndex = "9999";
     img.style.cursor = "grab";
     img.style.userSelect = "none";
-    img.style.pointerEvents = "auto";
 
     let dragging = false;
-    let offsetX = 0;
-    let offsetY = 0;
+    let ox = 0, oy = 0;
 
-    img.addEventListener("mousedown", (e) => {
+    img.onmousedown = e => {
       dragging = true;
-      offsetX = e.clientX - img.offsetLeft;
-      offsetY = e.clientY - img.offsetTop;
-    });
+      ox = e.clientX - img.offsetLeft;
+      oy = e.clientY - img.offsetTop;
+    };
 
-    document.addEventListener("mousemove", (e) => {
+    document.onmousemove = e => {
       if (!dragging) return;
-      img.style.left = e.clientX - offsetX + "px";
-      img.style.top = e.clientY - offsetY + "px";
-    });
+      img.style.left = e.clientX - ox + "px";
+      img.style.top = e.clientY - oy + "px";
+    };
 
-    document.addEventListener("mouseup", () => {
-      dragging = false;
-    });
+    document.onmouseup = () => dragging = false;
 
     document.body.appendChild(img);
     this._img = img;
